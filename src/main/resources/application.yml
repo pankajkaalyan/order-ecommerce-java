@@ -1,0 +1,75 @@
+server:
+  port: 8080
+  shutdown: graceful
+  servlet:
+    context-path: /order-ecommerce
+  error:
+    include-message: always
+    include-binding-errors: always
+
+spring:
+  application:
+    name: order-ecommerce
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+    properties:
+      hibernate:
+        generate_statistics: false
+        jdbc:
+          batch_size: 30
+        order_inserts: true
+        order_updates: true
+        batch_versioned_data: true
+    hibernate:
+      ddl-auto: none
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/test_db #${spring.datasource.orderecommercedb.url}
+    username: root #${spring.datasource.orderecommercedb.name}
+    password: toor #${spring.datasource.orderecommercedb.password}
+    hikari:
+      connection-timeout: 60000
+      maximum-pool-size: 10
+      autocommit: false
+      poolname: order-ecommerce
+      validationTimeout: 60000
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: pk3847530@gmail.com
+    password: xjqxlwwzmefngftp
+    transport:
+      protocol: smtp
+    properties:
+      mail:
+        debug: true
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+        ssl:
+          trust: smtp.gmail.com
+
+logging:
+  level:
+    ROOT: info
+    org.hibernate.sql: info
+
+---
+# qa profile
+
+spring.config.activate.on-profile: qa
+
+server:
+  port: 8081
+
+
+---
+# staging profile
+
+spring.config.activate.on-profile: staging
+
+server:
+  port: 8082
